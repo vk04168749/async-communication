@@ -1,0 +1,18 @@
+package snippet;
+
+public class Snippet {
+	# Customer
+	customer.notfound=Customer not found with ID {0}
+	
+	# Validation
+	customerId.notnull=Customer ID must not be null
+	items.notempty=Order must have at least one item
+	productId.notnull=Product ID must not be null
+	quantity.notnull=Quantity must not be null
+	quantity.min=Quantity must be at least 1
+	
+	# Order
+	order.notfound=Order not found with ID {0}
+	
+}
+

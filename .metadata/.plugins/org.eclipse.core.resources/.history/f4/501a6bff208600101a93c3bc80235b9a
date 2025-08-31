@@ -1,0 +1,22 @@
+package com.cnx.ecom.order.exception;
+
+public class OrderException extends RuntimeException {
+
+	private static final long serialVersionUID = -3524379169609847394L;
+	
+	private final String errorCode;
+
+    public OrderException(String message) {
+        super(message);
+        this.errorCode = "ORDER_ERROR";
+    }
+
+    public OrderException(String message, String errorCode) {
+        super(message);
+        this.errorCode = errorCode;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
+    }
+}

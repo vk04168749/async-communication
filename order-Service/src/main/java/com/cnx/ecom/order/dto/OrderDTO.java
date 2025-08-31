@@ -1,0 +1,24 @@
+package com.cnx.ecom.order.dto;
+
+import java.math.BigDecimal;
+import java.util.List;
+import lombok.Data;
+
+@Data
+public class OrderDTO {
+	
+    private Long orderId;
+    
+    private Long customerId;
+    
+    private BigDecimal totalAmount;
+    
+    private String status;
+    
+    private List<OrderItemDTO> items;
+
+    private AddressDto shippingAddress;
+
+    private AddressDto billingAddress;
+    
+}

@@ -1,0 +1,70 @@
+package com.cnx.ecom.order.aop;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+@Slf4j
+@Aspect
+@Component
+public class LoggingAspect {
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    /**
+     * Intercept all public methods of classes annotated with @RestController
+     */
+    @Around("@within(restController)")
+    public Object logControllerCall(ProceedingJoinPoint joinPoint, RestController restController) throws Throwable {
+
+        // Get HTTP request
+        HttpServletRequest request = null;
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes instanceof ServletRequestAttributes servletAttrs) {
+            request = servletAttrs.getRequest();
+        }
+
+        // Log request details
+        try {
+            String uri = request != null ? request.getRequestURI() : "N/A";
+            String httpMethod = request != null ? request.getMethod() : "N/A";
+            String requestBody = objectMapper.writeValueAsString(joinPoint.getArgs());
+
+            log.info("➡️ [{} {}] {} called | Request Body: {}", httpMethod, uri,
+                    joinPoint.getSignature().toShortString(), requestBody);
+        } catch (Exception e) {
+            log.warn("Failed to log request: {}", e.getMessage());
+        }
+
+        // Measure execution time
+        long startTime = System.currentTimeMillis();
+        Object response;
+        try {
+            response = joinPoint.proceed();
+        } catch (Throwable ex) {
+            log.error("❌ Exception in {}: {}", joinPoint.getSignature().toShortString(), ex.getMessage(), ex);
+            throw ex;
+        }
+        long duration = System.currentTimeMillis() - startTime;
+
+        // Log response
+        try {
+            String responseBody = objectMapper.writeValueAsString(response);
+            log.info("✅ {} completed in {} ms | Response Body: {}",
+                    joinPoint.getSignature().toShortString(), duration, responseBody);
+        } catch (Exception e) {
+            log.warn("Failed to log response: {}", e.getMessage());
+        }
+
+        return response;
+    }
+}

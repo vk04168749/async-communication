@@ -1,0 +1,24 @@
+package com.cnx.ecom.order.mapper;
+
+import com.cnx.ecom.order.dto.OrderDTO;
+import com.cnx.ecom.order.dto.OrderItemDTO;
+import com.cnx.ecom.order.entity.Order;
+import com.cnx.ecom.order.entity.OrderItem;
+import java.util.List;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+@Mapper(componentModel = "spring")
+public interface OrderMapper {
+
+    @Mapping(source = "customer.customerId", target = "customerId")
+    @Mapping(source = "customer.name", target = "customerName")
+    @Mapping(source = "items", target = "items")
+    OrderDTO toDto(Order order);
+
+    @Mapping(source = "product.productId", target = "productId")
+    OrderItemDTO toDto(OrderItem orderItem);
+
+    List<OrderItemDTO> toItemDtoList(List<OrderItem> items);
+    
+}

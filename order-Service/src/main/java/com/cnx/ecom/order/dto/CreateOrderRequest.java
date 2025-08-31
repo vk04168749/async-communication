@@ -1,0 +1,38 @@
+package com.cnx.ecom.order.dto;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
+import java.util.List;
+import lombok.Data;
+
+@Data
+public class CreateOrderRequest {
+
+    @NotNull(message = "{customerId.notnull}")
+    private Long customerId;
+
+    @NotEmpty(message = "{items.notempty}")
+    private List<OrderItemRequest> items;
+
+    @NotNull
+    private AddressDto shippingAddress;
+
+    private AddressDto billingAddress;
+
+    @Data
+    public static class OrderItemRequest {
+
+        @NotNull(message = "{productId.notnull}")
+        private Long productId;
+
+        private String productName;
+
+        private BigDecimal price;
+
+        @NotNull(message = "{quantity.notnull}")
+        @Min(value = 1, message = "{quantity.min}")
+        private Integer quantity;
+    }
+}

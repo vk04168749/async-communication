@@ -1,0 +1,87 @@
+package com.cnx.ecom.order.service;
+
+import com.cnx.ecom.order.dto.CreateOrderRequest;
+import com.cnx.ecom.order.dto.OrderDTO;
+import com.cnx.ecom.order.entity.Customer;
+import com.cnx.ecom.order.entity.Order;
+import com.cnx.ecom.order.entity.OrderItem;
+import com.cnx.ecom.order.entity.Product;
+import com.cnx.ecom.order.exception.OrderException;
+import com.cnx.ecom.order.mapper.OrderMapper;
+import com.cnx.ecom.order.repository.CustomerRepository;
+import com.cnx.ecom.order.repository.OrderRepository;
+import com.cnx.ecom.order.repository.ProductRepository;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+public class OrderService {
+
+    private final OrderRepository orderRepo;
+    
+    private final CustomerRepository customerRepo;
+    
+    private final ProductRepository productRepo;
+    
+    private final OrderMapper orderMapper;
+
+    @Transactional
+    public OrderDTO createOrder(CreateOrderRequest request) {
+        Customer customer = customerRepo.findById(request.getCustomerId())
+                .orElseThrow(() -> new OrderException("Customer not found: " + request.getCustomerId()));
+
+        Order order = new Order();
+        order.setCustomer(customer);
+        order.setStatus("PENDING");
+
+        BigDecimal total = BigDecimal.ZERO;
+        List<OrderItem> orderItems = new ArrayList<>();
+
+        for (CreateOrderRequest.OrderItemRequest itemReq : request.getItems()) {
+            Product product = productRepo.findById(itemReq.getProductId())
+                    .orElseThrow(() -> new OrderException("Product not found: " + itemReq.getProductId()));
+
+            if (product.getStockQuantity() < itemReq.getQuantity()) {
+                throw new OrderException("Insufficient stock for product: " + product.getName());
+            }
+
+            // Decrease stock
+            product.setStockQuantity(product.getStockQuantity() - itemReq.getQuantity());
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
+            orderItem.setProduct(product);
+            orderItem.setQuantity(itemReq.getQuantity());
+            orderItem.setPrice(product.getPrice());
+            orderItems.add(orderItem);
+
+            total = total.add(product.getPrice().multiply(BigDecimal.valueOf(itemReq.getQuantity())));
+        }
+
+        order.setTotalAmount(total);
+        order.setItems(orderItems);
+
+        Order saved = orderRepo.save(order);
+        return orderMapper.toDto(saved);
+    }
+
+    @Transactional(readOnly = true)
+    public OrderDTO getOrder(Long orderId) {
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
+        return orderMapper.toDto(order);
+    }
+
+    @Transactional
+    public OrderDTO updateStatus(Long orderId, String status) {
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
+        order.setStatus(status);
+        return orderMapper.toDto(order);
+    }
+}

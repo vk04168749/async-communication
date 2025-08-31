@@ -1,0 +1,54 @@
+package com.cnx.ecom.order.aop;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@Aspect
+@Component
+public class LoggingAspect {
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Pointcut("within(com.cnx.ecom.order.controller..*)")
+    public void controllerPackagePointcut() {
+        // Matches all controllers inside the controller package
+    }
+
+    @Around("controllerPackagePointcut()")
+    public Object logAroundControllers(ProceedingJoinPoint joinPoint) throws Throwable {
+        String methodName = joinPoint.getSignature().toShortString();
+        Object[] args = joinPoint.getArgs();
+
+        // Log request
+        try {
+            String requestJson = objectMapper.writeValueAsString(args);
+            log.info("➡️ Controller Method Called: {} | Request Args: {}", methodName, requestJson);
+        } catch (Exception e) {
+            log.warn("Could not log request args for {} due to: {}", methodName, e.getMessage());
+        }
+
+        Object response;
+        try {
+            response = joinPoint.proceed();
+
+            // Log response
+            try {
+                String responseJson = objectMapper.writeValueAsString(response);
+                log.info("✅ Controller Method Completed: {} | Response: {}", methodName, responseJson);
+            } catch (Exception e) {
+                log.warn("Could not log response for {} due to: {}", methodName, e.getMessage());
+            }
+
+            return response;
+        } catch (Throwable ex) {
+            log.error("❌ Exception in {}: {}", methodName, ex.getMessage(), ex);
+            throw ex;
+        }
+    }
+}
