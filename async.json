@@ -1,0 +1,343 @@
+{
+  "version": 6,
+  "entities": [
+    {
+      "entity": {
+        "type": "Project",
+        "id": "8fa861ae-9ae0-46cd-b96a-75955109f842",
+        "name": "ANIL_COM"
+      },
+      "children": [
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"country\": \"India\",\n  \"addresses\": [\n    {\n      \"street\": \"123 MG Road\",\n      \"city\": \"Bangalore\",\n      \"state\": \"Karnataka\",\n      \"zipCode\": \"560001\"\n    },\n    {\n      \"street\": \"456 Brigade Road\",\n      \"city\": \"Bangalore\",\n      \"state\": \"Karnataka\",\n      \"zipCode\": \"560002\"\n    }\n  ]\n}\n"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8543",
+              "path": "/api/customer"
+            },
+            "id": "6fdfdc90-80a1-419a-88f8-61614c4180e0",
+            "name": "CUSTOMER - ADD",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"street\": \"123 Main St\",\n  \"city\": \"Bangalore\",\n  \"state\": \"Karnataka\",\n  \"zipCode\": \"560001\"\n}\n"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8543",
+              "path": "/api/customer/1/address"
+            },
+            "id": "d943a9d5-caee-45a4-baae-972e5e6e00b9",
+            "name": "CUSTOMER - ADD ADDRESS",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"country\": \"India\",\n  \"addresses\": [\n    {\n      \"street\": \"123 MG Road\",\n      \"city\": \"Bangalore\",\n      \"state\": \"Karnataka\",\n      \"zipCode\": \"560001\"\n    },\n    {\n      \"street\": \"456 Brigade Road\",\n      \"city\": \"Bangalore\",\n      \"state\": \"Karnataka\",\n      \"zipCode\": \"560002\"\n    }\n  ]\n}\n"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8543",
+              "path": "/api/customer/1"
+            },
+            "id": "8825aa11-31f2-4d32-b488-68f4157693b0",
+            "name": "CUSTOMER - GET",
+            "headers": []
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8090",
+              "path": "/api/products"
+            },
+            "id": "62c16960-1802-46cc-b079-a284fbe6d0b5",
+            "name": "INVENTORY - GET PRODUCTS",
+            "headers": []
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"customerId\": \"1\",\n  \"billingAddress\": {\n    \"street\": \"123 Billing Street\",\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10001\",\n    \"country\": \"USA\"\n  },\n  \"shippingAddress\": {\n    \"street\": \"456 Shipping Avenue\",\n    \"city\": \"Los Angeles\",\n    \"state\": \"CA\",\n    \"zipCode\": \"90001\",\n    \"country\": \"USA\"\n  },\n  \"items\": [\n    {\n      \"productId\": 101,\n      \"quantity\": 2\n    },\n    {\n      \"productId\": \"102\",\n      \"quantity\": 1\n    }\n  ]\n}\n"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8080",
+              "path": "/api/orders"
+            },
+            "id": "8c847711-60ee-45f4-9f73-c249ad03b34a",
+            "name": "ORDER-CREATE",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8080",
+              "path": "/api/orders/1"
+            },
+            "id": "14cae376-a5d2-48bb-8fbf-9f57949d7394",
+            "name": "ORDER-GET",
+            "headers": []
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+              "name": "PUT"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8080",
+              "path": "/api/orders/1/status/PLACED"
+            },
+            "id": "0c733b3a-eea0-41d9-be27-0710aacdba68",
+            "name": "ORDER-UPDATE",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"orderId\": \"1\",\n  \"customerId\": 1,\n  \"paymentType\": \"CREDIT_CARD\",\n  \"referenceId\": \"4111-xxxx-xxxx-1111\"\n}\n"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/api/payments"
+            },
+            "id": "e8e32364-348a-4b2f-b047-46e006323a1c",
+            "name": "PAYMENT - CREATE",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"orderId\": \"ORD12345\",\n  \"customerId\": 101,\n  \"paymentType\": \"CREDIT_CARD\",\n  \"referenceId\": \"4111-xxxx-xxxx-1111\",\n  \"amount\": 1500.00\n}\n"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "name": "http",
+                "version": "V11"
+              },
+              "host": "localhost:8443",
+              "path": "/api/payments/1/1"
+            },
+            "id": "1cc95170-a1ed-44a7-bbda-1bb2ae1ef48d",
+            "name": "PAYMENT - GET",
+            "headers": []
+          }
+        }
+      ]
+    }
+  ]
+}
